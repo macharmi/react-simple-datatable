@@ -20,6 +20,15 @@ class DataTable extends Component{
         }
     }
 
+    onPaginate = (data, pageNumber, pageSize) => {
+        --pageNumber;
+        this.setState({...this.state, data: data.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize)});
+    }
+
+    componentDidMount(){
+        this.onPaginate(this.props.data, 1, 10)
+    }
+
     render(){
         let searchCriteria = []
         let sortCriteria = {}
@@ -46,11 +55,6 @@ class DataTable extends Component{
         }
         const handlePagination = (page) => {
             onPaginate(this.props.data, page, 10)
-        }
-
-        const onPaginate = (data, pageNumber, pageSize) => {
-            --pageNumber;
-            this.setState({...this.state, data: data.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize)});
         }
 
         const pagination = () => {
