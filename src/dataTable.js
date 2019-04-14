@@ -1,5 +1,10 @@
 import React, {Component} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faSort, faSortUp, faSortDown } from '@fortawesome/free-solid-svg-icons'
+import SortIcon from './components/sortIcon'
+
+library.add(faSort, faSortUp, faSortDown)
 
 
 class DataTable extends Component{
@@ -42,8 +47,13 @@ class DataTable extends Component{
                 if(column.sortable)
                     return(
                         <th >
-                            <a name="" onClick={() => {raiseSortEvent(column.key)}}>{column.name}</a>
-                            {" "}{this.state.sortCriteria.key === column.key?this.state.sortCriteria.order:""}
+                            <a  name="" 
+                                onClick={() => {raiseSortEvent(column.key)}
+                            }>
+                                {column.name}
+                            </a>
+                            <SortIcon searchable={column.searchable} order={this.state.sortCriteria.key === column.key?this.state.sortCriteria.order:""}></SortIcon>
+                            {" "}{}
                         </th>
                     )
                 else
