@@ -16,7 +16,7 @@ class DataTable extends Component{
         this.searchCriteria = []
         this.currentPage = 1
         this.state = {
-            data: props.data
+            data: props.data || []
         }
     }
 
@@ -41,15 +41,19 @@ class DataTable extends Component{
             this.props.onSort(sortCriteria)
         }
         else{
-            let data = {}
-            if(this.searchCriteria && this.searchCriteria.length > 0)
-                data = this.onSearch(this.props.data, this.searchCriteria)
-            else
-                data = this.props.data
-            if(this.sortCriteria)
-                data = this.onSort(data, this.sortCriteria)
-            data = this.onPaginate(data, 1, 10)
-            this.setState({...this.state, data: data})
+            if(this.props.data){
+                let data = {}
+                if(this.searchCriteria && this.searchCriteria.length > 0)
+                    data = this.onSearch(this.props.data, this.searchCriteria)
+                else
+                    data = this.props.data
+                if(this.sortCriteria)
+                    data = this.onSort(data, this.sortCriteria)
+                data = this.onPaginate(data, 1, 10)
+                this.setState({...this.state, data: data})
+            }else{
+                this.props.getData(this.setData, this.setRowCount, 1, this.sortCriteria, this.searchCriteria)
+            }
         }
     }
 
@@ -66,10 +70,16 @@ class DataTable extends Component{
         if(this.props.onSearch)
             this.props.onSearch(searchCriteria)
         else{
-            let data = this.onSearch(this.props.data, searchCriteria)
-            data = this.onSort(data, this.sortCriteria)
-            data = this.onPaginate(data, 1, 10)
-            this.setState({...this.state, data: data})
+            if(this.props.data){
+                let data = this.onSearch(this.props.data, searchCriteria)
+                data = this.onSort(data, this.sortCriteria)
+                data = this.onPaginate(data, 1, 10)
+                this.setState({...this.state, data: data})
+            }
+            else{
+                this.props.getData(this.setData, this.setRowCount, 1, this.sortCriteria, this.searchCriteria)
+            }
+
         }
     }
 
@@ -84,7 +94,7 @@ class DataTable extends Component{
                 return res.reduce((r,v) => r && v)
             }
         )
-        this.rowNumber = res.length
+        this.rowCount = res.length
         return res
     }
 
@@ -97,23 +107,62 @@ class DataTable extends Component{
             }
         )
     }
+    setData = (data) => {this.setState({...this.state, data: data})}
+    setRowCount = (rowCount) => {this.rowCount = rowCount}
+    getRecordCount = () => {
+        return this.rowCount || this.props.rowCount || (this.props.data && this.props.data.length) || 0
+    }
 
     componentDidMount(){
-        this.handlePaginate(this.props.data, 1)
+
+        if(this.props.data){
+            this.handlePaginate(this.props.data, 1)
+        }
+        else{
+            this.props.getData(this.setData, this.setRowCount, 1, this.sortCriteria, this.searchCriteria)
+        }
     }
 
     render(){
         const pagination = () => {
-            const recordCount = this.rowNumber || this.props.rowNumber || this.props.data.length
+            const recordCount = this.rowCount || this.props.rowCount || (this.props.data && this.props.data.length) || 0
+            let handleClick
+            if(this.props.data)
+                handleClick = (page) => {this.handlePaginate(this.props.data, page)}
+            else
+                handleClick = (page) => {
+                    this.props.getData(this.setData, this.setRowCount, page, this.sortCriteria, this.searchCriteria)
+                    this.currentPage = page
+                }
+
             return(
                 <Pagination>
                     <PaginationItem>
-                        <PaginationLink first href="#" onClick={() => {this.handlePaginate(this.props.data, 1)}}>First</PaginationLink>
+                        <PaginationLink
+                            first
+                            href={"javascript:void()"}
+                            onClick={() => {handleClick(1)}}
+                            First
+                        >
+                        </PaginationLink>
                     </PaginationItem>
                     {[...Array(Math.ceil(recordCount/10))].map((_,i) => i + 1).map(
-                        (page) => (<PaginationItem active={page === this.currentPage}><PaginationLink onClick={() => {this.handlePaginate(this.props.data, page)}} href="#">{page}</PaginationLink></PaginationItem>))}
+                        (page) => (
+                        <PaginationItem
+                            active={page === this.currentPage}
+                        >
+                            <PaginationLink
+                                onClick={() => {handleClick(page)}}
+                                href={"javascript:void()"}>{page}
+                            </PaginationLink>
+                        </PaginationItem>))}
                     <PaginationItem>
-                        <PaginationLink last href="#" onClick={() => {this.handlePaginate(this.props.data, Math.ceil(recordCount/10))}}>Last</PaginationLink>
+                        <PaginationLink
+                            last
+                            href={"javascript:void()"}
+                            onClick={() => {handleClick(Math.ceil(recordCount/10))}}>
+                            Last
+                        </PaginationLink>
                     </PaginationItem>
                 </Pagination>
              )
