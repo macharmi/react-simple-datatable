@@ -52,7 +52,6 @@ storiesOf('DataTable', module)
         title={"Customers listing"}
         columns={columns}
         data={data}
-        onSort={(fields) => {console.log(fields)}}
       >
       </DataTable>
   ))
