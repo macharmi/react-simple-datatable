@@ -1,13 +1,15 @@
 {
   "name": "react-simple-datatable",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "private": false,
   "main": "dist/index.js",
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.4.3",
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
     "@fortawesome/free-solid-svg-icons": "^5.8.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
     "axios": "^0.18.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "bootstrap": "^4.3.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
@@ -21,7 +23,7 @@
     "build:js": " rollup -c rollup/config.js",
     "lint": "npm run lint:css && npm run lint:js",
     "lint:css": "stylelint ./src/**/*.css",
-    "build": "yarn lint && rimraf dist/* && npm run build:js",
+    "build": "rimraf dist/* && npm run build:js",
     "lint:js": "eslint ./src/**/*.js",
     "storybook": "start-storybook"
   },

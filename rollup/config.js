@@ -11,6 +11,7 @@ module.exports = {
         }),
         resolve(),
         babel({
+            runtimeHelpers: true,
             exclude: 'node_modules/**',
             presets: ['@babel/env', '@babel/preset-react']
         }),
