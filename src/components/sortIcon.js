@@ -2,7 +2,7 @@ import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 const getIcon = (props) => {
-    if(props.searchable)
+    if(props.sortable)
     {
         if(props.order === 1){
             return(<FontAwesomeIcon icon="sort-up"></FontAwesomeIcon>)

@@ -177,7 +177,7 @@ class DataTable extends Component{
                                 onClick={() => {this.handleSort(column.key)}
                             }>
                                 {column.name}
-                            <SortIcon searchable={column.searchable} order={this.sortCriteria.key === column.key?this.sortCriteria.order:""}></SortIcon>
+                            <SortIcon sortable={column.sortable} order={this.sortCriteria.key === column.key?this.sortCriteria.order:""}></SortIcon>
                             </a>
                         </th>
                     )
