@@ -1,6 +1,5 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { Button } from '@storybook/react/demo';
 import DataTable from '../src/dataTable'
 import data from './data.json';
 import Axios from 'axios'
@@ -9,7 +8,7 @@ const columns = [
     {
       name: "Id",
       key:"id",
-      format: (value) => {return((<b>{"#" + value}</b>))},
+      format: (value) => {return((<b>{"#" + value.id}</b>))},
       sortable: true
     },
     {
@@ -29,21 +28,21 @@ const columns = [
       key:"phone",
       searchable: true,
       sortable: false,
-      format: (value) => {return(<a href={"tel:"+value}>{value}</a>)}
+      format: (value) => {return(<a href={"tel:"+value.phone}>{value.phone}</a>)}
     },
     {
       name: "E-mail",
       key:"email",
       searchable: true,
       sortable: false,
-      format: (value) => {return(<a href={"mailto:"+value}>{value}</a>)}
+      format: (value) => {return(<a href={"mailto:"+value.email}>{value.email}</a>)}
     },
     {
       name: "Gender",
       key:"gender",
       searchable: false,
       sortable: true,
-      format: (value) => {return(<span>{value === 'Male'?"Homme":"Femme"}</span>)}
+      format: (value) => {return(<span>{value.gender === 'Male'?"Homme":"Femme"}</span>)}
     }
   ]
 const getDataFromAjax = (setData, setRowCount, page, sort, search) => {
@@ -51,7 +50,7 @@ const getDataFromAjax = (setData, setRowCount, page, sort, search) => {
   if(page === 1){
     url = 'http://www.mocky.io/v2/5cb6340b33000013495d808c'
   }
-  if(page === 2){
+  else{
     url = "http://www.mocky.io/v2/5cb65e0e3200004c00cd4487"
   }
   Axios.get(url).then((data) => {
@@ -70,7 +69,7 @@ storiesOf('DataTable', module)
       >
       </DataTable>
   ))
-  .add('with emoji', () => (
+  .add('with ajax', () => (
     <DataTable
       className={"table"}
       title={"Customers listing"}

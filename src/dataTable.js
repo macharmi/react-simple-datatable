@@ -140,9 +140,8 @@ class DataTable extends Component{
                     <PaginationItem>
                         <PaginationLink
                             first
-                            href={"javascript:void()"}
+                            href={''}
                             onClick={() => {handleClick(1)}}
-                            First
                         >
                         </PaginationLink>
                     </PaginationItem>
@@ -153,13 +152,13 @@ class DataTable extends Component{
                         >
                             <PaginationLink
                                 onClick={() => {handleClick(page)}}
-                                href={"javascript:void()"}>{page}
+                                href={''}>{page}
                             </PaginationLink>
                         </PaginationItem>))}
                     <PaginationItem>
                         <PaginationLink
                             last
-                            href={"javascript:void()"}
+                            href={''}
                             onClick={() => {handleClick(Math.ceil(recordCount/10))}}>
                             Last
                         </PaginationLink>
@@ -202,7 +201,7 @@ class DataTable extends Component{
                 const rowData = this.props.columns.map(
                     (column) => {
                         if(column.format)
-                            return(<td >{column.format(dataLine[column.key])}</td>)
+                            return(<td >{column.format(dataLine)}</td>)
                         else
                             return(<td >{dataLine[column.key]}</td>)
                     }
