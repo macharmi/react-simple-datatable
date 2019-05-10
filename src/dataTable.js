@@ -16,7 +16,16 @@ class DataTable extends Component{
         this.searchCriteria = []
         this.currentPage = 1
         this.state = {
-            data: props.data || []
+            data: []
+        }
+    }
+
+    componentWillReceiveProps(nextProps){
+        this.sortCriteria = {}
+        this.searchCriteria = []
+        this.currentPage = 1
+        if(this.props.data){
+            this.handlePaginate(this.props.data, 1)
         }
     }
 
@@ -88,7 +97,7 @@ class DataTable extends Component{
             (row) => {
                 let res = searchCriteria.map(
                     (search) => {
-                        return(row[search.key].includes(search.value))
+                        return(row[search.key] && row[search.key].includes(search.value))
                     }
                 )
                 return res.reduce((r,v) => r && v)
@@ -143,6 +152,7 @@ class DataTable extends Component{
                             href={''}
                             onClick={() => {handleClick(1)}}
                         >
+                        First
                         </PaginationLink>
                     </PaginationItem>
                     {[...Array(Math.ceil(recordCount/10))].map((_,i) => i + 1).map(
@@ -173,7 +183,7 @@ class DataTable extends Component{
                     return(
                         <th >
                             <a
-                                href="#"
+                                href="javascript:;"
                                 onClick={() => {this.handleSort(column.key)}
                             }>
                                 {column.name}
