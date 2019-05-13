@@ -24,8 +24,8 @@ class DataTable extends Component{
         this.sortCriteria = {}
         this.searchCriteria = []
         this.currentPage = 1
-        if(this.props.data){
-            this.handlePaginate(this.props.data, 1)
+        if(this.nextProps.data){
+            this.handlePaginate(this.nextProps.data, 1)
         }
     }
 
